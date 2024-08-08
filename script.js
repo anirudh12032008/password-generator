@@ -1,51 +1,44 @@
-const passwordDisplay = document.getElementById('password');
-const generateBtn = document.getElementById('generateBtn');
-const includeUppercase = document.getElementById('includeUppercase');
-const includeLowercase = document.getElementById('includeLowercase');
-const includeNumbers = document.getElementById('includeNumbers');
-const includeSymbols = document.getElementById('includeSymbols');
+const pwdDisplay = document.getElementById('password');
+const genBtn = document.getElementById('generateBtn');
+const upperChk = document.getElementById('includeUppercase');
+const lowerChk = document.getElementById('includeLowercase');
+const numChk = document.getElementById('includeNumbers');
+const symChk = document.getElementById('includeSymbols');
 
-const UPPERCASE_CHAR_CODES = arrayFromLowToHigh(65, 90);
-const LOWERCASE_CHAR_CODES = arrayFromLowToHigh(97, 122);
-const NUMBER_CHAR_CODES = arrayFromLowToHigh(48, 57);
-const SYMBOL_CHAR_CODES = arrayFromLowToHigh(33, 47).concat(
-  arrayFromLowToHigh(58, 64)
-).concat(
-  arrayFromLowToHigh(91, 96)
-).concat(
-  arrayFromLowToHigh(123, 126)
-);
+const UPPER = getCharCodes(65, 90);
+const LOWER = getCharCodes(97, 122);
+const NUMBERS = getCharCodes(48, 57);
+const SYMBOLS = getCharCodes(33, 47).concat(getCharCodes(58, 64)).concat(getCharCodes(91, 96)).concat(getCharCodes(123, 126));
 
-generateBtn.addEventListener('click', () => {
+genBtn.addEventListener('click', () => {
     const length = 12;
-    const includeUpper = includeUppercase.checked;
-    const includeLower = includeLowercase.checked;
-    const includeNum = includeNumbers.checked;
-    const includeSym = includeSymbols.checked;
+    const upper = upperChk.checked;
+    const lower = lowerChk.checked;
+    const num = numChk.checked;
+    const sym = symChk.checked;
     
-    const password = generatePassword(length, includeUpper, includeLower, includeNum, includeSym);
-    passwordDisplay.value = password;
+    pwdDisplay.value = createPwd(length, upper, lower, num, sym);
 });
 
-function generatePassword(length, includeUpper, includeLower, includeNum, includeSym) {
-    let charCodes = [];
-    if (includeUpper) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES);
-    if (includeLower) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES);
-    if (includeNum) charCodes = charCodes.concat(NUMBER_CHAR_CODES);
-    if (includeSym) charCodes = charCodes.concat(SYMBOL_CHAR_CODES);
+function createPwd(len, upper, lower, num, sym) {
+    let chars = [];
+    if (upper) chars = chars.concat(UPPER);
+    if (lower) chars = chars.concat(LOWER);
+    if (num) chars = chars.concat(NUMBERS);
+    if (sym) chars = chars.concat(SYMBOLS);
     
-    const passwordCharacters = [];
-    for (let i = 0; i < length; i++) {
-        const characterCode = charCodes[Math.floor(Math.random() * charCodes.length)];
-        passwordCharacters.push(String.fromCharCode(characterCode));
+    let pwd = [];
+    for (let i = 0; i < len; i++) {
+        const code = chars[Math.floor(Math.random() * chars.length)];
+        pwd.push(String.fromCharCode(code));
     }
-    return passwordCharacters.join('');
+    return pwd.join('');
 }
 
-function arrayFromLowToHigh(low, high) {
-    const array = [];
+function getCharCodes(low, high) {
+    let arr = [];
     for (let i = low; i <= high; i++) {
-        array.push(i);
+        arr.push(i);
     }
-    return array;
+    return arr;
 }
